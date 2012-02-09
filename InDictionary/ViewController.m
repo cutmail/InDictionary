@@ -10,6 +10,9 @@
 
 @implementation ViewController
 
+@synthesize button = _button;
+@synthesize textField = _textField;
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -17,6 +20,12 @@
 }
 
 #pragma mark - View lifecycle
+
+- (void)dealloc
+{
+    self.button = nil;
+    self.textField = nil;
+}
 
 - (void)viewDidLoad
 {
@@ -29,6 +38,8 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.button = nil;
+    self.textField = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -55,6 +66,17 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
+- (IBAction)search:(id)sender {
+    NSString *str = self.textField.text;
+
+    if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:str] == YES)
+    {
+        UIReferenceLibraryViewController *reference = [[[UIReferenceLibraryViewController alloc] initWithTerm:str] autorelease];
+        
+        [self presentModalViewController:reference animated:YES];
+    }
 }
 
 @end
